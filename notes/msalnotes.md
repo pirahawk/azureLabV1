@@ -88,3 +88,12 @@ have the blocks to call down to the MSAL bits from the views like so (see the ar
 ```
 
 In the Past you have tried to do all this yourself, maybe don't and let MSAL do that work for you. but its good to get an idea of how the code is laid out
+
+
+
+# Which Nuget package to use
+See this on the MSAL site about Microsoft identity platform authentication libraries
+https://docs.microsoft.com/en-us/azure/active-directory/develop/reference-v2-libraries
+
+
+https://docs.microsoft.com/en-us/azure/active-directory/develop/web-app-quickstart?pivots=devlang-aspnet-core
