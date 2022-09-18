@@ -155,7 +155,7 @@ client_id
 redirect_uri
 	https://localhost:7195/auth-login           // Imp as this is what is obtained from the MSAL configuration
 response_type
-	id_token
+	id_token                                    // Note that it is just asking for the ID token here (not access token)
 scope
 	openid profile
 response_mode
