@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Microsoft.IdentityModel.Logging;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 builder.Configuration.AddEnvironmentVariables();
 
-
+IdentityModelEventSource.ShowPII = true;
 builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, Constants.AzureAdB2C);
 
 // Add services to the container.
