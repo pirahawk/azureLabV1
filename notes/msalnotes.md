@@ -72,9 +72,8 @@ https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnec
 
 
 
-Notice that for example this location in the Repo
-https://github.com/AzureAD/microsoft-identity-web/blob/master/src/Microsoft.Identity.Web.UI/Areas/MicrosoftIdentity/Controllers/AccountController.cs
 
+For example The noraml Web APP B2C scenario looks like so:
 This is like where the Code samples, like at https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/blob/master/1-WebApp-OIDC/1-5-B2C/Views/Shared/_LoginPartial.cshtml
 have the blocks to call down to the MSAL bits from the views like so (see the area and controller)
 ```
@@ -88,6 +87,9 @@ have the blocks to call down to the MSAL bits from the views like so (see the ar
 ```
 
 In the Past you have tried to do all this yourself, maybe don't and let MSAL do that work for you. but its good to get an idea of how the code is laid out
+
+**To See how the MSAL ASP Area and action is implemented in MSAL** see this part in the MSAL repo
+https://github.com/AzureAD/microsoft-identity-web/blob/master/src/Microsoft.Identity.Web.UI/Areas/MicrosoftIdentity/Controllers/AccountController.cs
 
 
 
