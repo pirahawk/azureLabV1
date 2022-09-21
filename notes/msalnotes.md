@@ -106,7 +106,10 @@ https://docs.microsoft.com/en-us/azure/active-directory-b2c/configure-authentica
 
 
 
-# Ex 1 - Simple Auth using Hybrid workflow
+# Ex 1 - Simple Auth using Hybrid workflow - B2C
+
+"Kind of based on this https://learn.microsoft.com/en-us/azure/active-directory-b2c/configure-authentication-sample-web-app?tabs=visual-studio with this example
+https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/tree/master/1-WebApp-OIDC/1-5-B2C"
 
 In this solution `https://github.com/pirahawk/azureLabV1/commit/9ae25a4e15fe5991cebc463e9fdb0c9e6ffc005d` what I had was a simple UI Web app using MSAL to auth with ADB2C.
 
@@ -191,3 +194,13 @@ state=CfDJ8OWWyQWR8SRMnaCHCUxpRmTgMBD2kiCMv4B_wwrmgS-.....<hidden>  // This is r
 ```
 
 This was noticed when I looked at the `this.Request.Form["error"]` property of the ASP Razor Page when debugging the solution with a breakpoint on the POST route method in the model class.
+
+
+
+# Ex2 WebApp that calls Web API - B2C
+
+Docs:
+https://learn.microsoft.com/en-us/azure/active-directory-b2c/configure-authentication-sample-web-app-with-api?tabs=visual-studio
+
+Example here:
+https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/tree/master/4-WebApp-your-API/4-2-B2C
