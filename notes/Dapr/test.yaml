@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: daprdevelopment
+  labels:
+    name: daprdevelopment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysampleapi
+  namespace: daprdevelopment
+  labels:
+    app: mysampleapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysampleapi
+  template:
+    metadata:
+      labels:
+        app: mysampleapi
+    spec:
+      containers:
+      - name: mysampleapicontainer
+        image: daprsampleapi:latest
+        # need to use IfNotPresent to test local docker images
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
