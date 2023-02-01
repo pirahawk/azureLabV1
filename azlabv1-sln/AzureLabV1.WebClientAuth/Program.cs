@@ -9,7 +9,8 @@ builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 builder.Configuration.AddEnvironmentVariables();
 
 IdentityModelEventSource.ShowPII = true;
-builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, Constants.AzureAdB2C);
+builder.Services
+    .AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, Constants.AzureAdB2C);
 
 // Add services to the container.
 builder.Services.AddRazorPages()

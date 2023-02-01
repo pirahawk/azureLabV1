@@ -204,3 +204,19 @@ https://learn.microsoft.com/en-us/azure/active-directory-b2c/configure-authentic
 
 Example here:
 https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/tree/master/4-WebApp-your-API/4-2-B2C
+
+Use this example its way better than before
+https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/tree/master/2-WebApp-graph-user/2-2-TokenCache
+https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/tree/master/4-WebApp-your-API/4-2-B2C
+
+This was also helpful
+https://www.josephguadagno.net/2020/06/26/connecting-to-an-api-protected-by-microsoft-identity-platform
+
+
+Things I had to do during the ADb2C app registration
+
+Create the Web API App registration:
+* Mostly everything on the create step was default. From the `manifest` can see that the `"signInAudience": "AzureADandPersonalMicrosoftAccount"`  setting was used. (**Important: Always see the Manifest definition**)
+* Expose an API:
+    * First I changed the Application ID URI to something more friendly than the GUID
+    * Next I added a sample scope ` 

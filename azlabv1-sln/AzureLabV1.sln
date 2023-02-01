@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureLabV1.WebClientAuth", "AzureLabV1.WebClientAuth\AzureLabV1.WebClientAuth.csproj", "{92F2168C-7FA9-4DC9-BEC7-09B5F751E8BE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureLabV1.Dapr.SampleWebApi", "AzureLabV1.Dapr.SampleWebApi\AzureLabV1.Dapr.SampleWebApi.csproj", "{B2154175-B2A3-4AEB-9870-26A68C252222}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{92F2168C-7FA9-4DC9-BEC7-09B5F751E8BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92F2168C-7FA9-4DC9-BEC7-09B5F751E8BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92F2168C-7FA9-4DC9-BEC7-09B5F751E8BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2154175-B2A3-4AEB-9870-26A68C252222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2154175-B2A3-4AEB-9870-26A68C252222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2154175-B2A3-4AEB-9870-26A68C252222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2154175-B2A3-4AEB-9870-26A68C252222}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

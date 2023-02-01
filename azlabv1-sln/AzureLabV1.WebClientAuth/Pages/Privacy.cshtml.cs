@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net;
 
 namespace AzureLabV1.WebClientAuth.Pages
 {
+    [Authorize]
     public class PrivacyModel : PageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
@@ -12,8 +15,14 @@ namespace AzureLabV1.WebClientAuth.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+            }
+
+           return Page();
         }
     }
 }
