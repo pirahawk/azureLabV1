@@ -1,0 +1,27 @@
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["AzureLabV1.Dapr.SampleWebApi.csproj", "AzureLabV1.Dapr.SampleWebApi/"]
+RUN dotnet restore "AzureLabV1.Dapr.SampleWebApi/AzureLabV1.Dapr.SampleWebApi.csproj"
+
+# COPY . .
+COPY . AzureLabV1.Dapr.SampleWebApi/
+WORKDIR "/src/AzureLabV1.Dapr.SampleWebApi"
+RUN dotnet build "AzureLabV1.Dapr.SampleWebApi.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "AzureLabV1.Dapr.SampleWebApi.csproj" -c Release -o /app/publish
+
+# See https://learn.microsoft.com/en-us/aspnet/core/security/docker-https?view=aspnetcore-7.0
+RUN dotnet dev-certs https -ep /app/publish/https/aspnetapp.pfx -p MyPassword123
+RUN dotnet dev-certs https --trust
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+
+ENTRYPOINT ["dotnet", "AzureLabV1.Dapr.SampleWebApi.dll"]
