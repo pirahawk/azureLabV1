@@ -25,3 +25,8 @@ https://localhost:7285/swagger/index.html
 
 
 ```
+
+
+# Kubernets
+
+For notes on pulling local docker images see https://medium.com/swlh/how-to-run-locally-built-docker-images-in-kubernetes-b28fbc32cc1d  Although note that this did not work for me. In the end I just needed to set `imagePullPolicy: IfNotPresent` in the yaml definitions

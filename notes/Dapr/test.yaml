@@ -26,6 +26,7 @@ spec:
       - name: mysampleapicontainer
         image: daprsampleapi:latest
         # need to use IfNotPresent to test local docker images
+        # see https://medium.com/swlh/how-to-run-locally-built-docker-images-in-kubernetes-b28fbc32cc1d
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
