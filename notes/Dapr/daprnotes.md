@@ -30,3 +30,27 @@ https://localhost:7285/swagger/index.html
 # Kubernets
 
 For notes on pulling local docker images see https://medium.com/swlh/how-to-run-locally-built-docker-images-in-kubernetes-b28fbc32cc1d  Although note that this did not work for me. In the end I just needed to set `imagePullPolicy: IfNotPresent` in the yaml definitions
+
+
+# Dapr
+
+https://docs.dapr.io/operations/hosting/kubernetes/
+
+install using https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/ 
+
+Dapr install with helm  https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
+
+
+Example
+
+```
+dapr init -k -n dapr-control-plane
+```
+
+* Port forward the dapr dashboard like so
+
+```
+kubectl port-forward service/dapr-dashboard -n dapr-control-plane 5001:8080
+
+http://localhost:5001/overview
+```
