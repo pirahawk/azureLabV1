@@ -1,5 +1,7 @@
+using Dapr;
 using Microsoft.IdentityModel.Logging;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
@@ -23,10 +25,23 @@ var app = builder.Build();
     app.UseSwaggerUI();
 //}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
+
+// Dapr will send serialized event object vs. being raw CloudEvent
+app.UseCloudEvents();
+
+// needed for Dapr pub/sub routing
+app.MapSubscribeHandler();
 
 app.MapControllers();
 
+app.MapPost("/orders", [Topic("orderpubsub", "orders")] (Order order) => {
+    Console.WriteLine("Subscriber received : " + order);
+    return Results.Ok(order);
+});
+
 app.Run();
+
+public record Order([property: JsonPropertyName("orderId")] int OrderId);

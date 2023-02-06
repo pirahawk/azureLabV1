@@ -54,3 +54,10 @@ kubectl port-forward service/dapr-dashboard -n dapr-control-plane 5001:8080
 
 http://localhost:5001/overview
 ```
+
+```
+// Note that the --app-port is the "HTTP" port that the dotnet api is configured to listen on which for our porject happens to be ":5285"
+dapr run --app-id order-processor --components-path .\components\ --app-port 5285 -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi\AzureLabV1.Dapr.SampleWebApi.csproj
+
+dapr run --app-id checkout-sdk --components-path .\components\ -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleClient\AzureLabV1.Dapr.SampleClient.csproj
+```
