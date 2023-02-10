@@ -1,0 +1,15 @@
+namespace: default
+
+labels:
+  app: daprsampleapplication
+
+# daprannotations:
+#   dapr.io/enabled: true
+#   dapr.io/enable-api-logging: true
+
+secrets:
+  name: alldaprsecrets
+  inline:
+    user-name: YWRtaW4=
+    password: MWYyZDFlMmU2N2Rm
+    redis-password: MWYyZDFlMmU2N2Rm

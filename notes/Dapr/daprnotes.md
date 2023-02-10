@@ -5,6 +5,8 @@ docker build -t 'daprsampleapi:latest' .
 
 docker build -t daprsampleapi:latest -f .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi\dockerfile .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi
 
+docker build -t daprsampleclientapi:latest -f .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi.ClientApi\dockerfile .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi.ClientApi
+
 
 docker run --rm -d -p 7285:443 -p 5285:80 daprsampleapi:latest -n daprsampleapi
 
@@ -60,4 +62,34 @@ http://localhost:5001/overview
 dapr run --app-id order-processor --components-path .\components\ --app-port 5285 -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi\AzureLabV1.Dapr.SampleWebApi.csproj
 
 dapr run --app-id checkout-sdk --components-path .\components\ -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleClient\AzureLabV1.Dapr.SampleClient.csproj
+```
+
+# Helm
+
+```
+
+
+helm upgrade --debug --dry-run dapr-sample-system ./helm/dapr-sample-application -i -n daprsamplesystem --create-namespace --wait --reset-values
+
+helm upgrade dapr-sample-system ./helm/dapr-sample-application -i -n daprsampleapplication --create-namespace --wait --reset-values
+
+
+ kubectl port-forward  service/mysampleapi -n daprsampleapplication 5001:8080
+```
+
+
+# Crazy
+
+```
+https://learn.microsoft.com/en-us/dotnet/architecture/dapr-for-net-developers/publish-subscribe
+
+helm install redis bitnami/redis --set image.tag=6.2
+kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}"
+
+helm upgrade dapr-sample-system ./helm/dapr-sample-application -i  --wait --reset-values
+
+helm uninstall dapr-sample-system
+
+kubectl port-forward  service/mysampleapiclient  5002:8080
+kubectl port-forward  service/mysampleapi  5001:8080
 ```
