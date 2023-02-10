@@ -67,8 +67,6 @@ dapr run --app-id checkout-sdk --components-path .\components\ -- dotnet run --p
 # Helm
 
 ```
-
-
 helm upgrade --debug --dry-run dapr-sample-system ./helm/dapr-sample-application -i -n daprsamplesystem --create-namespace --wait --reset-values
 
 helm upgrade dapr-sample-system ./helm/dapr-sample-application -i -n daprsampleapplication --create-namespace --wait --reset-values
@@ -78,16 +76,20 @@ helm upgrade dapr-sample-system ./helm/dapr-sample-application -i -n daprsamplea
 ```
 
 
-# Crazy
+# First Try - Getting Dapr working in Default namespace
 
+Had some issues with getting everything working in my private namespace, got dapper working by just deploying to default namespace. Did the following:
 ```
 https://learn.microsoft.com/en-us/dotnet/architecture/dapr-for-net-developers/publish-subscribe
 
+1) Install redis from Helm:
 helm install redis bitnami/redis --set image.tag=6.2
 kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}"
 
+2) deploy Helm chart for my app to default namespace
 helm upgrade dapr-sample-system ./helm/dapr-sample-application -i  --wait --reset-values
 
+3) If needed to update or port-forward, commands here:
 helm uninstall dapr-sample-system
 
 kubectl port-forward  service/mysampleapiclient  5002:8080

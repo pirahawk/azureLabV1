@@ -20,7 +20,6 @@ namespace AzureLabV1.Dapr.SampleWebApi.ClientApi.Controllers
         }
 
         [HttpGet(Name = "OrderPub")]
-        //[Topic("orderpubsub", "orders")]
         public async Task<Order> PostOrder()
         {
             var order = new Order(1);
