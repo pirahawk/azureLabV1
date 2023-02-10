@@ -1,4 +1,4 @@
-namespace: default
+namespace: daprapp
 
 labels:
   app: daprsampleapplication

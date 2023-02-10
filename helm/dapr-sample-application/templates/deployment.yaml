@@ -155,4 +155,4 @@ spec:
       myapptype: pubapi
     ports:
         - port: 8080
-          targetPort: 80
+          targetPort: 3000
