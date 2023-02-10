@@ -42,6 +42,8 @@ spec:
         ports:
         - containerPort: 80
         env:
+            - name: instance
+              value: {{ uuidv4 | quote }}
 {{- range $secK, $secV := .Values.secrets.inline }}
             - name: {{ $secK }}
               valueFrom:
@@ -94,6 +96,8 @@ spec:
         ports:
         - containerPort: 80
         env:
+            - name: instance
+              value: {{ uuidv4 | quote }}
 {{- range $secK, $secV := .Values.secrets.inline }}
             - name: {{ $secK }}
               valueFrom:

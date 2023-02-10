@@ -1,13 +1,21 @@
 # Docker 
 
+## Docker Build
 ```
-docker build -t 'daprsampleapi:latest' .  
+docker build -t 'daprsampleapi:latest' .
+
+1) Build SampleWebApi solution
 
 docker build -t daprsampleapi:latest -f .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi\dockerfile .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi
 
+2) Build ClientApi solution
+
 docker build -t daprsampleclientapi:latest -f .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi.ClientApi\dockerfile .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi.ClientApi
 
+```
 
+## Docker Run
+```
 docker run --rm -d -p 7285:443 -p 5285:80 daprsampleapi:latest -n daprsampleapi
 
 
@@ -29,7 +37,7 @@ https://localhost:7285/swagger/index.html
 ```
 
 
-# Kubernets
+# Kubernetes
 
 For notes on pulling local docker images see https://medium.com/swlh/how-to-run-locally-built-docker-images-in-kubernetes-b28fbc32cc1d  Although note that this did not work for me. In the end I just needed to set `imagePullPolicy: IfNotPresent` in the yaml definitions
 
@@ -94,4 +102,7 @@ helm uninstall dapr-sample-system
 
 kubectl port-forward  service/mysampleapiclient  5002:8080
 kubectl port-forward  service/mysampleapi  5001:8080
+
+also need to try:
+ASPNETCORE_URLS="https://+:443;http://+:3000"
 ```
