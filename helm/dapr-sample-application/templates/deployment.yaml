@@ -30,7 +30,7 @@ spec:
         dapr.io/app-id: "mysampleapi"
         dapr.io/enabled: 'true'
         dapr.io/enable-api-logging: 'true'
-        dapr.io/app-port: "80"
+        dapr.io/app-port: "3000"
         
     spec:
       containers:
@@ -40,10 +40,12 @@ spec:
         # see https://medium.com/swlh/how-to-run-locally-built-docker-images-in-kubernetes-b28fbc32cc1d
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         env:
             - name: instance
               value: {{ uuidv4 | quote }}
+            - name: ASPNETCORE_URLS
+              value: "http://+:3000"
 {{- range $secK, $secV := .Values.secrets.inline }}
             - name: {{ $secK }}
               valueFrom:
@@ -86,7 +88,7 @@ spec:
         dapr.io/app-id: "mysampleapiclient"
         dapr.io/enabled: 'true'
         dapr.io/enable-api-logging: 'true'
-        # dapr.io/app-port: "80"
+        dapr.io/app-port: "3000"
         
     spec:
       containers:
@@ -94,10 +96,12 @@ spec:
         image: daprsampleclientapi:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         env:
             - name: instance
               value: {{ uuidv4 | quote }}
+            - name: ASPNETCORE_URLS
+              value: "http://+:3000"
 {{- range $secK, $secV := .Values.secrets.inline }}
             - name: {{ $secK }}
               valueFrom:
@@ -129,7 +133,7 @@ spec:
         myapptype: subapi
     ports:
         - port: 8080
-          targetPort: 80
+          targetPort: 3000
 
 
 ---
