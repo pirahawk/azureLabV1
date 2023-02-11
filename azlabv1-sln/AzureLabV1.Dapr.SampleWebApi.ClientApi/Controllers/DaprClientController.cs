@@ -1,6 +1,8 @@
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AzureLabV1.Dapr.SampleWebApi.ClientApi.Controllers
@@ -11,19 +13,40 @@ namespace AzureLabV1.Dapr.SampleWebApi.ClientApi.Controllers
     {
         private readonly ILogger<DaprClientController> _logger;
         private readonly DaprClient daprClient;
+        private readonly IHttpClientFactory httpClientFactory;
 
-        public DaprClientController(ILogger<DaprClientController> logger, DaprClient daprClient)
+        public DaprClientController(ILogger<DaprClientController> logger,
+            DaprClient daprClient,
+            IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
             this.daprClient = daprClient;
+            this.httpClientFactory = httpClientFactory;
         }
 
-        [HttpPost(Name = "OrderPub")]
-        public async Task<IActionResult> PostOrder([FromBody]Order orderToSend)
+        [HttpPost("orderPublish", Name = "orderPublish")]
+        public async Task<IActionResult> PostOrder([FromBody] Order orderToSend)
         {
             // Publish an event/message using Dapr PubSub
             await this.daprClient.PublishEventAsync("orderpubsub", "orders", orderToSend);
             _logger.LogInformation("Published data: " + orderToSend.OrderId);
+            return StatusCode((int)HttpStatusCode.Accepted, orderToSend);
+        }
+
+        [HttpPost("orderInvoke", Name = "orderInvoke")]
+        public async Task<IActionResult> PostOrderInvoke([FromBody] Order orderToSend)
+        {
+            var client = this.httpClientFactory.CreateClient("daprServiceInvocation");
+
+            var orderJson = JsonSerializer.Serialize(orderToSend);
+            var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"order", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+
             return StatusCode((int)HttpStatusCode.Accepted, orderToSend);
         }
     }

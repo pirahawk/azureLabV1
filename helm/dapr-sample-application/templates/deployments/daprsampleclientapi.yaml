@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysampleapiclient
+  namespace: {{ $.Values.namespace }}
+  labels:
+{{- range $labK, $labV := .Values.labels }}
+    {{ $labK }}: {{ $labV }}
+{{- end }}
+    instance: {{ uuidv4 | quote }}
+    myapptype: pubapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+    {{- range $labK, $labV := .Values.labels }}
+        {{ $labK }}: {{ $labV }}
+    {{- end }}
+        myapptype: pubapi
+  template:
+    metadata:
+      labels:
+      {{- range $labK, $labV := .Values.labels }}
+        {{ $labK }}: {{ $labV }}
+      {{- end }}
+        myapptype: pubapi
+
+      annotations:
+        dapr.io/app-id: "mysampleapiclient"
+        dapr.io/enabled: 'true'
+        dapr.io/enable-api-logging: 'true'
+        dapr.io/app-port: "3000"
+        
+    spec:
+      containers:
+      - name: daprsampleclientapicontainer
+        image: daprsampleclientapi:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        env:
+            - name: instance
+              value: {{ uuidv4 | quote }}
+            - name: ASPNETCORE_URLS
+              value: "http://+:3000"
+            - name: DAPR_INVOKE_TARGET_APP_ID
+              value: "mysampleapi"
+{{- range $secK, $secV := .Values.secrets.inline }}
+            - name: {{ $secK }}
+              valueFrom:
+                secretKeyRef:
+                    name: {{ $.Values.secrets.name }}
+                    key: {{ $secK }}
+                    optional: false
+{{- end }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysampleapiclient
+  namespace: {{ $.Values.namespace }}
+  labels:
+{{- range $labK, $labV := .Values.labels }}
+    {{ $labK }}: {{ $labV }}
+{{- end }}
+    instance: {{ uuidv4 | quote }}
+
+spec:
+    type: ClusterIP
+    selector:
+      myapptype: pubapi
+    ports:
+        - port: 8080
+          targetPort: 3000

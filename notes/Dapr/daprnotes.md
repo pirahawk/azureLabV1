@@ -72,6 +72,9 @@ dapr run --app-id order-processor --components-path .\components\ --app-port 528
 dapr run --app-id checkout-sdk --components-path .\components\ -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleClient\AzureLabV1.Dapr.SampleClient.csproj
 ```
 
+* FOR A FULL LIST OF DAPR ANNOTATIONS AND FLAGS SEE
+https://docs.dapr.io/reference/arguments-annotations-overview/
+
 # Helm
 
 ```
