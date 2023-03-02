@@ -50,7 +50,27 @@ install using https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-depl
 
 Dapr install with helm  https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
 
+## Running locally
 
+To run locally using the >dapr cli tool for example:
+
+
+```
+// https://docs.dapr.io/reference/cli/dapr-run/
+// NOTE:Remember to match the "--app-port" to whatever is configured in your C# project
+dapr run --app-id csharp-subscriber --app-port 5285 dotnet run .\AzureLabV1.Dapr.SampleWebApi.csproj
+
+
+dapr run --app-id csharp-client --app-port 5286 dotnet run .\AzureLabV1.Dapr.SampleWebApi.ClientApi.csproj
+
+
+// https://docs.dapr.io/reference/cli/dapr-publish/
+dapr publish --publish-app-id csharp-subscriber --pubsub orderpubsub --topic orders  --data '{"orderId":"888"}'
+dapr publish --publish-app-id csharp-subscriber --pubsub orderpubsub --topic orders  --data '{"order":{"orderId":"888"}}'
+
+```
+
+## Running on Kube
 Example
 
 ```
@@ -162,3 +182,13 @@ helm upgrade dapr-sample-system ./helm/dapr-sample-application -i -n daprapp --c
 
 kubectl port-forward  service/mysampleapiclient -n daprapp  5002:8080
 ```
+
+# Dapr Actors
+
+https://docs.dapr.io/developing-applications/building-blocks/actors/howto-actors/
+
+https://docs.dapr.io/reference/api/actors_api/
+
+https://docs.dapr.io/developing-applications/sdks/dotnet/dotnet-actors/
+
+https://github.com/dapr/dotnet-sdk/tree/master/examples/Actor
