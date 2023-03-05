@@ -1,4 +1,4 @@
-using AzureLabV1.Dapr.SampleWebApi.ClientApi.Controllers;
+using Dapr.Actors.Client;
 using Microsoft.IdentityModel.Logging;
 using System.Reflection;
 
@@ -10,7 +10,10 @@ IdentityModelEventSource.ShowPII = true;
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddDapr();
+builder.Services
+    .AddControllers()
+    .AddDapr();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -34,6 +37,37 @@ builder.Services.AddHttpClient("daprServiceInvocation", (serviceProvider, httpCl
     httpClient.BaseAddress = new Uri(daprInvokeUrl);
     httpClient.DefaultRequestHeaders.Add("dapr-app-id", daprAppId);
     httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+});
+
+builder.Services.AddTransient<IActorProxyFactory>(serviceProvider =>
+{
+    var logger = serviceProvider.GetService<ILogger<IActorProxyFactory>>();
+    var configurationRoot = serviceProvider.GetService<IConfiguration>();
+    // Note: For the Actors Proxy to work, you need to know the URL (mainly the Dapr Sidecar PORT number)
+    // of the target Dapr Sidecar that hosts the app that contains the Actors defined within.
+    // You must always point to the Dapr sidecar in the url, not the Apps hosted url:port.
+
+    var daprActorUrl = configurationRoot?.GetValue<string?>("DAPR_ACTOR_URL");
+
+    if (string.IsNullOrWhiteSpace(daprActorUrl))
+    {
+        var message = $"IActorProxyFactoryInvocation: Unable to bind to configuration setting: DAPR_ACTOR_URL";
+        logger?.LogError(message);
+        throw new ArgumentException(message);
+    }
+
+    logger?.LogInformation($"IActorProxyFactoryInvocation: Actor proxy URL created for {daprActorUrl}");
+    var proxyOptions = new ActorProxyOptions
+    {
+        HttpEndpoint = daprActorUrl,
+    };
+
+    return new ActorProxyFactory(proxyOptions);
+});
+
+builder.Services.AddActors(configure =>
+{
+
 
 });
 

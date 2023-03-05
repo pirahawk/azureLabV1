@@ -1,3 +1,6 @@
+using AzureLabV1.Dapr.Common;
+using Dapr.Actors;
+using Dapr.Actors.Client;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -14,14 +17,17 @@ namespace AzureLabV1.Dapr.SampleWebApi.ClientApi.Controllers
         private readonly ILogger<DaprClientController> _logger;
         private readonly DaprClient daprClient;
         private readonly IHttpClientFactory httpClientFactory;
+        private readonly IActorProxyFactory actorProxyFactory;
 
         public DaprClientController(ILogger<DaprClientController> logger,
             DaprClient daprClient,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory,
+            IActorProxyFactory actorProxyFactory)
         {
             _logger = logger;
             this.daprClient = daprClient;
             this.httpClientFactory = httpClientFactory;
+            this.actorProxyFactory = actorProxyFactory;
         }
 
         [HttpPost("orderPublish", Name = "orderPublish")]
@@ -48,6 +54,16 @@ namespace AzureLabV1.Dapr.SampleWebApi.ClientApi.Controllers
             }
 
             return StatusCode((int)HttpStatusCode.Accepted, orderToSend);
+        }
+
+        [HttpPost("orderActorInvoke", Name = "orderActorInvoke")]
+        public async Task<IActionResult> PostActorInvoke([FromBody] OrderDataState orderData)
+        {
+            var actorType = nameof(OrderActor);
+            var actorId = new ActorId($"{orderData.Id}");
+            var proxy = this.actorProxyFactory.CreateActorProxy<IOrderActor>(actorId, actorType);
+            var response = await proxy.SaveStateAsync(orderData);
+            return StatusCode((int)HttpStatusCode.Accepted, response);
         }
     }
 

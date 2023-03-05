@@ -18,7 +18,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DAPR_HTTP_PORT": "5285",
-        "DAPR_INVOKE_TARGET_APP_ID": "csharp-subscriber"
+        "DAPR_INVOKE_TARGET_APP_ID": "csharp-subscriber",
+        "DAPR_ACTOR_URL": "http://localhost:64466"
       }
     },
     "IIS Express": {

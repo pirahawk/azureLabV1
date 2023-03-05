@@ -58,10 +58,18 @@ To run locally using the >dapr cli tool for example:
 ```
 // https://docs.dapr.io/reference/cli/dapr-run/
 // NOTE:Remember to match the "--app-port" to whatever is configured in your C# project
-dapr run --app-id csharp-subscriber --app-port 5285 -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi\AzureLabV1.Dapr.SampleWebApi.csproj
+
+dapr run --app-id csharp-subscriber --dapr-http-port 64441 --app-port 5285 -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi\AzureLabV1.Dapr.SampleWebApi.csproj
+
+// Note: You need to makesure the dapr http port for the actors is static and always constant as for Actor proxies to work correctly, they need to be aimed at the 
+// Dapr sidecar [http://hostname:port] of the App that hosts the Actors, NOT the Actor [http://hostname:port]!!
+// this is why the `--dapr-http-port` flag is essential.
+
+dapr run --app-id csharp-actors --dapr-http-port 64466 --app-port 5085 -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.Actors.WebApi\AzureLabV1.Dapr.Actors.WebApi.csproj
 
 //Note: Update the `launchsettings.json` for the `AzureLabV1.Dapr.SampleWebApi.ClientApi.csproj` to add the environment variables to match the SampleWebApi run above
-dapr run --app-id csharp-client --app-port 5286 -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi.ClientApi\AzureLabV1.Dapr.SampleWebApi.ClientApi.csproj
+
+dapr run --app-id csharp-client --dapr-http-port 65295 --app-port 5286 -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi.ClientApi\AzureLabV1.Dapr.SampleWebApi.ClientApi.csproj
 
 
 // https://docs.dapr.io/reference/cli/dapr-publish/
@@ -184,6 +192,7 @@ kubectl port-forward  service/mysampleapiclient -n daprapp  5002:8080
 ```
 
 # Dapr Actors
+https://docs.dapr.io/developing-applications/sdks/dotnet/dotnet-actors/dotnet-actors-howto/
 
 https://docs.dapr.io/developing-applications/building-blocks/actors/howto-actors/
 
