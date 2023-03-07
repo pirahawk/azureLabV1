@@ -15,7 +15,7 @@ namespace AzureLabV1.Dapr.SampleWebApi.Controllers
             _logger = logger;
         }
 
-        [HttpPost(Name = "processOrders")]
+        [HttpPost("process",Name = "processOrders")]
         [Topic("orderpubsub", "orders")]
         public IActionResult ProcessOrder(Order order)
         {

@@ -1,4 +1,7 @@
+using AzureLabV1.Dapr.Common;
 using Dapr.Actors.Client;
+using Dapr.Client;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using System.Reflection;
 
@@ -24,10 +27,18 @@ builder.Services.AddHttpClient("daprServiceInvocation", (serviceProvider, httpCl
     var daprServicePort = configurationRoot?.GetValue<int?>("Dapr:ApiPort");
     var daprAppId = configurationRoot?.GetValue<string?>("Dapr:ApiAppId");
 
-    if (!daprServicePort.HasValue || string.IsNullOrWhiteSpace(daprAppId))
+    if (!daprServicePort.HasValue)
     {
-        logger?.LogError($"daprServiceInvocation: Unable to bind to configuration setting: DAPR_HTTP_PORT");
-        return;
+        var message = $"daprServiceInvocation: Unable to bind to configuration setting: Dapr:ApiPort";
+        logger?.LogError(message);
+        throw new ArgumentException(message);
+    }
+
+    if (string.IsNullOrWhiteSpace(daprAppId))
+    {
+        var message = $"daprServiceInvocation: Unable to bind to configuration setting: Dapr:ApiAppId";
+        logger?.LogError(message);
+        throw new ArgumentException(message);
     }
 
     var daprInvokeUrl = $"http://localhost:{daprServicePort}";
@@ -37,6 +48,22 @@ builder.Services.AddHttpClient("daprServiceInvocation", (serviceProvider, httpCl
     httpClient.BaseAddress = new Uri(daprInvokeUrl);
     httpClient.DefaultRequestHeaders.Add("dapr-app-id", daprAppId);
     httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+});
+
+builder.Services.AddTransient<IDaprClientFactory>(serviceProvider => {
+    var logger = serviceProvider.GetService<ILogger<IDaprClientFactory>>();
+    var configurationRoot = serviceProvider.GetService<IConfiguration>();
+    var daprAppId = configurationRoot?.GetValue<string?>("Dapr:ApiAppId");
+
+    if (daprAppId == null)
+    {
+        var message = $"daprServiceInvocation: Unable to bind to configuration setting: Dapr:ApiAppId";
+        logger?.LogError(message);
+        throw new ArgumentException(message);
+    }
+
+    var factory = new DaprClientFactory(daprAppId);
+    return factory;
 });
 
 builder.Services.AddTransient<IActorProxyFactory>(serviceProvider =>
@@ -52,9 +79,9 @@ builder.Services.AddTransient<IActorProxyFactory>(serviceProvider =>
     var daprActorUrl = $"http://{daprApiSidecarHostName}:{daprApiSidecarPort}";
 
 
-    if (string.IsNullOrWhiteSpace(daprActorUrl))
+    if (string.IsNullOrWhiteSpace(daprApiSidecarHostName))
     {
-        var message = $"IActorProxyFactoryInvocation: Unable to bind to configuration setting: DAPR_ACTOR_URL";
+        var message = $"IActorProxyFactoryInvocation: Unable to bind to configuration setting: Dapr:ApiSidecarHostName";
         logger?.LogError(message);
         throw new ArgumentException(message);
     }

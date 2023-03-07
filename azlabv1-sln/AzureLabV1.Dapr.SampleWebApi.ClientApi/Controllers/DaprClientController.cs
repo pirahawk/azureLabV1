@@ -18,16 +18,19 @@ namespace AzureLabV1.Dapr.SampleWebApi.ClientApi.Controllers
         private readonly DaprClient daprClient;
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IActorProxyFactory actorProxyFactory;
+        private readonly IDaprClientFactory daprClientFactory;
 
         public DaprClientController(ILogger<DaprClientController> logger,
             DaprClient daprClient,
             IHttpClientFactory httpClientFactory,
-            IActorProxyFactory actorProxyFactory)
+            IActorProxyFactory actorProxyFactory,
+            IDaprClientFactory daprClientFactory)
         {
             _logger = logger;
             this.daprClient = daprClient;
             this.httpClientFactory = httpClientFactory;
             this.actorProxyFactory = actorProxyFactory;
+            this.daprClientFactory = daprClientFactory;
         }
 
         [HttpPost("orderPublish", Name = "orderPublish")]
@@ -42,11 +45,13 @@ namespace AzureLabV1.Dapr.SampleWebApi.ClientApi.Controllers
         [HttpPost("orderInvoke", Name = "orderInvoke")]
         public async Task<IActionResult> PostOrderInvoke([FromBody] Order orderToSend)
         {
-            var client = this.httpClientFactory.CreateClient("daprServiceInvocation");
+            //var client = this.httpClientFactory.CreateClient("daprServiceInvocation");
 
-            var orderJson = JsonSerializer.Serialize(orderToSend);
-            var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"order", content);
+            //var orderJson = JsonSerializer.Serialize(orderToSend);
+            //var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
+            //var response = await client.PostAsync($"order", content);
+
+            var response = await daprClientFactory.CreateAppInvocationRequest(HttpMethod.Post, "order/process", orderToSend);
 
             if (!response.IsSuccessStatusCode)
             {
