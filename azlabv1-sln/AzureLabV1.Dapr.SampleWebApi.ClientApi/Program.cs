@@ -21,8 +21,8 @@ builder.Services.AddHttpClient("daprServiceInvocation", (serviceProvider, httpCl
 {
     var logger = serviceProvider.GetService<ILogger<IHttpClientBuilder>>();
     var configurationRoot = serviceProvider.GetService<IConfiguration>();
-    var daprServicePort = configurationRoot?.GetValue<int?>("DAPR_HTTP_PORT");
-    var daprAppId = configurationRoot?.GetValue<string?>("DAPR_INVOKE_TARGET_APP_ID");
+    var daprServicePort = configurationRoot?.GetValue<int?>("Dapr:ApiPort");
+    var daprAppId = configurationRoot?.GetValue<string?>("Dapr:ApiAppId");
 
     if (!daprServicePort.HasValue || string.IsNullOrWhiteSpace(daprAppId))
     {
@@ -47,7 +47,10 @@ builder.Services.AddTransient<IActorProxyFactory>(serviceProvider =>
     // of the target Dapr Sidecar that hosts the app that contains the Actors defined within.
     // You must always point to the Dapr sidecar in the url, not the Apps hosted url:port.
 
-    var daprActorUrl = configurationRoot?.GetValue<string?>("DAPR_ACTOR_URL");
+    var daprApiSidecarPort = configurationRoot?.GetValue<int?>("Dapr:ApiSidecarPort");
+    var daprApiSidecarHostName = configurationRoot?.GetValue<string?>("Dapr:ApiSidecarHostName");
+    var daprActorUrl = $"http://{daprApiSidecarHostName}:{daprApiSidecarPort}";
+
 
     if (string.IsNullOrWhiteSpace(daprActorUrl))
     {
