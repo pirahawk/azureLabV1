@@ -4,8 +4,6 @@ using Dapr.Actors.Client;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Text;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AzureLabV1.Dapr.SampleWebApi.ClientApi.Controllers

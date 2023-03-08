@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Ignoring Azure Components (as they might contain sensitive stuff
+
+az-components/
 
 # User-specific files
 *.rsuser

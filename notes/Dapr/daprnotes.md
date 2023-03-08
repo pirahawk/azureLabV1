@@ -69,12 +69,17 @@ To run locally using the >dapr cli tool for example:
 dapr run --app-id csharp-subscriber --dapr-http-port 64441 --app-port 5285 -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi\AzureLabV1.Dapr.SampleWebApi.csproj
 
 
+dapr run --app-id csharp-subscriber --dapr-http-port 64441 --app-port 5285 --components-path ".\az-components" -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi\AzureLabV1.Dapr.SampleWebApi.csproj
+
 
 //Note: Update the `launchsettings.json` for the `AzureLabV1.Dapr.SampleWebApi.ClientApi.csproj` to add the environment variables to match the SampleWebApi run above
 
 
 
 dapr run --app-id csharp-client --dapr-http-port 65295 --app-port 5286 -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi.ClientApi\AzureLabV1.Dapr.SampleWebApi.ClientApi.csproj
+
+dapr run --app-id csharp-client --dapr-http-port 65295 --app-port 5286 --components-path ".\az-components" -- dotnet run --project .\azlabv1-sln\AzureLabV1.Dapr.SampleWebApi.ClientApi\AzureLabV1.Dapr.SampleWebApi.ClientApi.csproj
+
 
 
 // https://docs.dapr.io/reference/cli/dapr-publish/
