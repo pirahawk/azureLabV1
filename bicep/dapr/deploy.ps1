@@ -9,6 +9,7 @@ targetLocation="uksouth" `
 cosmosDbAccountName="mydaprcosmos5afa2f1ec54d" `
 cosmosDbDatabase="daprdb" `
 cosmosDbDaprActorStateContainer="actorstate" `
+cosmosDbDaprGlobalStateContainer="globalstate" `
 daprServiceBusNamespace="daprsbns2bf609dbd7b4" `
 daprServicebusPubSubTopicName="orders"
 

@@ -5,7 +5,7 @@
 
 # Ignoring Azure Components (as they might contain sensitive stuff
 
-az-components/
+.vscode
 
 # User-specific files
 *.rsuser

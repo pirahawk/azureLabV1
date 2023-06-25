@@ -3,6 +3,7 @@ param targetLocation string
 param cosmosDbAccountName string
 param cosmosDbDatabase string
 param cosmosDbDaprActorStateContainer string
+param cosmosDbDaprGlobalStateContainer string
 
 param daprServiceBusNamespace string
 param daprServicebusPubSubTopicName string
@@ -29,11 +30,37 @@ resource daprCosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' 
       }
     }
 
-    resource daprCosmosDbContainer 'containers@2022-08-15' = {
+    resource daprCosmosActorStateDbContainer 'containers@2022-08-15' = {
       name: cosmosDbDaprActorStateContainer
       properties: {
+        options:{
+          autoscaleSettings:{
+            maxThroughput: 1000
+          }
+        }
         resource: {
           id: cosmosDbDaprActorStateContainer
+          partitionKey:{
+            kind: 'Hash'
+            paths: [ '/partitionKey' ]
+          }
+          indexingPolicy:{
+            automatic: true
+          }
+        }
+      }
+    }
+
+    resource daprCosmosGlobalStateDbContainer 'containers@2022-08-15' = {
+      name: cosmosDbDaprGlobalStateContainer
+      properties: {
+        options:{
+          autoscaleSettings:{
+            maxThroughput: 1000
+          }
+        }
+        resource: {
+          id: cosmosDbDaprGlobalStateContainer
           partitionKey:{
             kind: 'Hash'
             paths: [ '/partitionKey' ]

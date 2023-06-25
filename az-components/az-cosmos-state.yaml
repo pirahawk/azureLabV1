@@ -1,0 +1,26 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+
+metadata:
+  name: actor-state-cosmos
+  namespace: default
+
+spec:
+  type: state.azure.cosmosdb
+  version: v1
+  metadata:
+  - name: url
+    value: "https://<PUT COSMOS DB NAME HERE>.documents.azure.com:443/"
+
+  - name: masterKey
+    value: "<PUT COSMOS MASTER KEY HERE>"
+
+  - name: database
+    value: "daprdb"
+
+  - name: collection
+    value: "actorstate"
+
+  - name: actorStateStore
+    value: "true"
+
